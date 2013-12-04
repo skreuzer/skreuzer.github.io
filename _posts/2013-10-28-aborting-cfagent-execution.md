@@ -9,6 +9,16 @@ the class halt_cfagent gets defined, cf-agent will exit its current
 run,
 
 {% highlight sh %}
+body common control
+{
+    bundlesequence => { "blackout" };
+}
+
+body agent control
+{
+    abortclasses => { "abort_cfagent" };
+}
+
 bundle agent blackout
 {
     vars:
@@ -19,14 +29,7 @@ bundle agent blackout
 
     classes:
 
-        "halt_cfagent" expression => fileexists("$(blackout_file)"),
-            handle => "define_classes_halt_cfagent",
+        "abort_cfagent" expression => fileexists("$(blackout_file)"),
             comment => "Abort execution of cf-agent";
-
-    reports:
-
-        halt_cfagent::
-
-            "Cfengine is in blackout mode and will not execute. Remove $(blackout_file) to continue.";
 }
 {% endhighlight %}
