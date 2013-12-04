@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Zeroing Spare Disks on a NetApp
-
+tags: ["netapp"]
 ---
 Having spare disks already zeroed will reduce the amount of time creating a
 new volume or rebuilding a raid set
