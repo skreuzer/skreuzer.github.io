@@ -23,17 +23,4 @@ which has been merged into back into [cfengine/masterfiles](https://github.com/c
 It sets the path to the `realpath` binary on several different flavors of Unix
 and Linux and to allow you to write an agent like this
 
-```
-bundle agent copy_release
-{
-    vars:
-
-        "file"     slist  => { "foo.py", "bar.py", "baz.py" };
-        "src_path" string => execresult("$(paths.path[realpath]) /opt", "noshell")
-
-    files:
-
-        "/usr/local/bin/$(file)"
-            copy_from => local_dcp("$(src_path)/$(file)");
-}
-```
+<script src="https://gist.github.com/skreuzer/379299c2cc37567b5321.js"></script>
