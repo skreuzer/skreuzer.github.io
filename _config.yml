@@ -1,3 +1,4 @@
-pygments: true
+markdown: kramdown
+highlighter: pygments
 future: true
 serve: 4000
