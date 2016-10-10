@@ -1,7 +1,5 @@
 ---
-layout: post
 title: Creating a File-Backed Disk with mdconfig
-tags: ["freebsd"]
 ---
 {% highlight bash %}
 $ dd if=/dev/zero of=newimage bs=1k count=5k

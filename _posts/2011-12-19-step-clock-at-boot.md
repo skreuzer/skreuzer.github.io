@@ -1,7 +1,5 @@
 ---
-layout: post
 title:  Stepping the system clock during boot
-tags: ["feeebsd", "ntp"]
 ---
 FreeBSD allows you to perform an instantaneous change to your system clock while
 the host is booting up no matter how great the difference between a machine's

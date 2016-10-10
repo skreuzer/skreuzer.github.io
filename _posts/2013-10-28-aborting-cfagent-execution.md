@@ -1,7 +1,6 @@
 ---
-layout: post
+layout: single
 title: Aborting execution of cf-agent
-tags: ["cfengine"]
 ---
 From time to time it might be necessary to temporary halt the
 execution of cf-agent for any number of reasons. If during a run

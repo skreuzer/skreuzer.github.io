@@ -1,7 +1,5 @@
 ---
-layout: post
 title: Use realpath to work around the CFEngine 3.5.3 symlink change
-tags: ["cfengine"]
 ---
 In CFEngine 3.5.3, a symlink created by a user pointing to resources owned by a
 different user is no longer followed.

@@ -1,7 +1,5 @@
 ---
-layout: post
 title: Reflections after one year
-published: false
 ---
 Today marks my 1 year anniversary as a FreeBSD developer. I opened my first
 Problem Report in 2006 and after roughly three years of hacking on the ports

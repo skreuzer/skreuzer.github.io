@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Running csup from periodic
 ---
 I keep a copy of the FreeBSD source and ports repository locally on disk so its

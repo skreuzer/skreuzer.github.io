@@ -1,7 +1,5 @@
 ---
-layout: post
 title: Storing IP addresses in MySQL
-tags: ["mysql"]
 ---
 Lets say you have an IP address, 192.168.0.10, and want to store it in a
 table. The most common method people seem to use it to store it as a CHAR(15).

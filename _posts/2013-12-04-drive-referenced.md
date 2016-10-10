@@ -1,7 +1,5 @@
 ---
-layout: post
 title: Determine what drive is referenced using the stats show disk command
-tags: ["netapp"]
 ---
 Here is what a portion of the output from the `stats show disk` command
 looks like:

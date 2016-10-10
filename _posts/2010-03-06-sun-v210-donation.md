@@ -1,7 +1,5 @@
 ---
-layout: post
 title: Sun v210 Donation
-published: false
 ---
 Thanks to a generous donation by Nathan Whitehorn, a Sun SunFire v210 is sitting
 on the floor of my office waiting to have FreeBSD installed on it. Since this is

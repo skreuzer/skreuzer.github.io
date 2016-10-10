@@ -1,7 +1,5 @@
 ---
-layout: post
 title: Automatic forwarder configuration
-tags: ["freebsd", "named", "bind"]
 ---
 Since FreeBSD 7.3-RELEASE, it has been possible to
 automatically setup a forwarding nameserver simply by adding
