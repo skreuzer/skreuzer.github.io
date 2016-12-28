@@ -1,4 +1,5 @@
 # Site Settings
+theme                    : "minimal-mistakes-jekyll"
 locale                   : "en-US"
 title                    : "Miscellaneous Notes"
 title_separator          : "-"
