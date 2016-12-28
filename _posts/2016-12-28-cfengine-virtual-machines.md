@@ -26,7 +26,7 @@ make it much easier to extend. In addition, these examples provided below are a
 bit more portable, detect additional hypervisors and should work across a wider
 range of platforms as well.
 
-#### Detecting virtualized hosts through Vendor OUIs
+### Detecting virtualized hosts through Vendor OUIs
 
 The MAC address is a unique identifier for network interfaces. It is a 48-bit
 number with the first 24 bits being the Organizationally Unique Identifier. The
@@ -73,7 +73,7 @@ bundle agent detect_guest_oui
 }
 ```
 
-#### Detecting virtualized hosts through Linux's /proc filesystem
+### Detecting virtualized hosts through Linux's /proc filesystem
 
 The procfs filesystem on Linux is a special filesystem which presents various
 information about running processes. While procfs has been implemented in
@@ -106,7 +106,7 @@ bundle agent detect_guest_files
 }
 ```
 
-#### Detecting a FreeBSD virtualized host
+### Detecting a FreeBSD virtualized host
 
 When FreeBSD detects that it is being virtualized it will expose the hypervisor
 as a sysctl under kern.
