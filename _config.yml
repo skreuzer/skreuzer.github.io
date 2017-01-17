@@ -6,6 +6,7 @@ title_separator          : "-"
 name                     : "Steven Kreuzer"
 description              : "Notes on various things that I can't seem to remeber"
 url                      : "http://steven.kreuzer.cx"
+# url                    : "http://localhost:4000"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "skreuzer/skreuzer.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
@@ -72,7 +73,7 @@ analytics:
 # Site Author
 author:
   name             : "Steven Kreuzer"
-  avatar           : "bio-photo.jpg"
+  avatar           : "/images/bio-photo.jpg"
   bio              : "Just another FreeBSD hacker."
   location         : "New York, NY"
   email            : "skreuzer@FreeBSD.org"
