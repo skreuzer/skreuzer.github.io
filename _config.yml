@@ -1,10 +1,9 @@
 # Site Settings
-theme                    : "minimal-mistakes-jekyll"
 locale                   : "en-US"
 title                    : "Miscellaneous Notes"
 title_separator          : "-"
 name                     : "Steven Kreuzer"
-description              : "Notes on various things that I can't seem to remeber"
+description              : "Notes on various things that I can't seem to remember"
 url                      : "http://steven.kreuzer.cx"
 # url                    : "http://localhost:4000"
 baseurl                  : # the subpath of your site, e.g. "/blog"
