@@ -1,6 +1,12 @@
-_site/
-.DS_Store
+# Hugo default output directory
+/public
+
+## OS Files
+# Windows
 Thumbs.db
-Gemfile.lock
-.jekyll-metadata
-.sass-cache/
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# OSX
+.DS_Store
