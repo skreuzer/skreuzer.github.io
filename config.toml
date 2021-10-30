@@ -4,6 +4,7 @@ title = 'Steven Kreuzer'
 theme = 'archie'
 copyright = "© Steven Kreuzer"
 paginate = 4
+publishDir = "docs"
 
 [[params.social]]
 name = "GitHub"
