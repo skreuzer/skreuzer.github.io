@@ -1,0 +1,208 @@
+<!doctype html><html><head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge"><title>Detecting Virtual Machines in CFEngine - Steven Kreuzer</title><meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Out of the box CFEngine has some support for detecting if it is running on top of a hypervisor. Unfortunately, it appears that a regression was introduced in 3.6.0 which prevented cf-agent from detecting Xen and this functunality appears to have has never worked on FreeBSD as well.
+I submitted a pull request which addresses the issue documented in CFE-1563 but it will not be included in CFEngine 3.10 and right now only fixes the issue on Linux.">
+<meta property="og:image" content>
+<meta property="og:title" content="Detecting Virtual Machines in CFEngine">
+<meta property="og:description" content="Out of the box CFEngine has some support for detecting if it is running on top of a hypervisor. Unfortunately, it appears that a regression was introduced in 3.6.0 which prevented cf-agent from detecting Xen and this functunality appears to have has never worked on FreeBSD as well.
+I submitted a pull request which addresses the issue documented in CFE-1563 but it will not be included in CFEngine 3.10 and right now only fixes the issue on Linux.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://steven.kreuzer.cx/posts/cfengine-virtual-machines/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2016-12-28T00:00:00+00:00">
+<meta property="article:modified_time" content="2016-12-28T00:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Detecting Virtual Machines in CFEngine">
+<meta name=twitter:description content="Out of the box CFEngine has some support for detecting if it is running on top of a hypervisor. Unfortunately, it appears that a regression was introduced in 3.6.0 which prevented cf-agent from detecting Xen and this functunality appears to have has never worked on FreeBSD as well.
+I submitted a pull request which addresses the issue documented in CFE-1563 but it will not be included in CFEngine 3.10 and right now only fixes the issue on Linux.">
+<script src=https://steven.kreuzer.cxjs/feather.min.js></script>
+<link href=https://steven.kreuzer.cx/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css rel=stylesheet>
+<link rel=stylesheet type=text/css media=screen href=https://steven.kreuzer.cx/css/main.2f9b5946627215dc1ae7fa5f82bfc9cfcab000329136befeea5733f21e77d68f.css>
+</head>
+<body>
+<div class=content><header>
+<div class=main>
+<a href=https://steven.kreuzer.cx>Steven Kreuzer</a>
+</div>
+<nav>
+<a href=/>Home</a>
+<a href=/posts>All Posts</a>
+<a href=/tags>Tags</a>
+</nav>
+</header>
+<main>
+<article>
+<div class=title>
+<h1 class=title>Detecting Virtual Machines in CFEngine</h1>
+<div class=meta>Posted on Dec 28, 2016</div>
+</div>
+<section class=body>
+<p>Out of the box CFEngine has some support for detecting if it is running on top
+of a hypervisor. Unfortunately, it appears that a
+<a href=https://tracker.mender.io/browse/CFE-1563>regression</a> was introduced in 3.6.0
+which prevented cf-agent from detecting Xen and this functunality appears to
+have has never worked on <a href=https://tracker.mender.io/browse/CFE-2203>FreeBSD</a>
+as well.</p>
+<p>I submitted a <a href=https://github.com/cfengine/core/pull/2746>pull request</a> which
+addresses the issue documented in CFE-1563 but it will not be included in
+CFEngine 3.10 and right now only fixes the issue on Linux. If you are a FreeBSD
+user and install cfengine via the
+<a href=https://www.freshports.org/sysutils/cfengine39/>sysutils/cfengine39</a> port I
+have added a local patch in
+<a href="https://svnweb.freebsd.org/ports?view=revision&revision=428081">r428081</a> to
+work around the issue documented in CFE-2203. My goal is to eventually get this
+patch pushed back upstream as well.</p>
+<p>While it is frustrating that this functionality has been broken for so long,
+assuming that the host you are running on is not going out of its way to hide
+the fact that its virtualized it seems like much of the code in
+libenv/sysinfo.c to detect various hypervisors can rewritten as policies which
+make it much easier to extend. In addition, these examples provided below are a
+bit more portable, detect additional hypervisors and should work across a wider
+range of platforms as well.</p>
+<h3 id=detecting-virtualized-hosts-through-vendor-ouis>Detecting virtualized hosts through Vendor OUIs</h3>
+<p>The MAC address is a unique identifier for network interfaces. It is a 48-bit
+number with the first 24 bits being the Organizationally Unique Identifier. The
+OUI is assigned via the IEEE and uniquely identifies the vendor or
+manufacturer. CFEngine will collect the mac addresses of all network interfaces
+it detects and populate them in an array called <code>$(sys.hardware_mac)</code>. Cfengine
+will also set the variable <code>$(sys.interface)</code> to what it believes is the main
+system interface on the host. Using these two variables we have an operating
+system agnostic method to look at the first 3 octets of a mac address and see
+if they match any known OUIs used in different hypervisor products.</p>
+<p>The <code>string_head()</code> function returns the first 8 characters of the primary mac
+address which we are referencing as <code>$(sys.hardware_mac[$(sys.interface)])</code>.
+The <code>string_downcase()</code> function is used to convert it to lower case and after
+that <code>strcmp()</code> is used to iterate through all the keys in the <code>$(vm_ouis)</code>
+data container looking for a match. If one is found a class based on the value
+of the matching key will be defined.</p>
+<pre tabindex=0><code>bundle agent detect_guest_oui
+{
+    vars:
+
+        &quot;mac_address&quot; string =&gt; string_downcase(string_head(&quot;$(sys.hardware_mac[$(sys.interface)])&quot;, &quot;8&quot;));
+
+        &quot;vm_ouis&quot; data =&gt; '{
+            &quot;00:05:69&quot;: &quot;vmware&quot;,
+            &quot;00:0c:29&quot;: &quot;vmware&quot;,
+            &quot;00:1c:14&quot;: &quot;vmware&quot;,
+            &quot;00:50:56&quot;: &quot;vmware&quot;,
+            &quot;00:15:5d&quot;: &quot;hyper_v&quot;,
+            &quot;00:16:3e&quot;: &quot;xen_domu&quot;,
+            &quot;58:9c:fc&quot;: &quot;bhyve&quot;,
+        }';
+
+        &quot;vm_oui&quot; slist =&gt; getindices(&quot;vm_ouis&quot;);
+
+    classes:
+
+        &quot;found_vm_mac&quot; expression =&gt; strcmp(&quot;$(mac_address)&quot;, &quot;$(vm_oui)&quot;);
+
+        &quot;$(vm_ouis[$(mac_address)])&quot; expression =&gt; &quot;found_vm_mac&quot;,
+            scope =&gt; &quot;namespace&quot;;
+}
+</code></pre><h3 id=detecting-virtualized-hosts-through-linuxs-proc-filesystem>Detecting virtualized hosts through Linux&rsquo;s /proc filesystem</h3>
+<p>The procfs filesystem on Linux is a special filesystem which presents various
+information about running processes. While procfs has been implemented in
+various different Unix-like operating systems it is slowly being depreciated in
+FreeBSD and has been fully removed from OpenBSD. On Linux procfs has been
+extended to also include non-process related data and certain hypervisors will
+create entries under /proc which allows can be used to check if the host is
+being virtualized. This method is generally not as reliable since it may
+require special drivers to be installed on the guest host. We can also use this
+method to deteremine if the host is acting as the initial privileged domain
+(dom0) started by the Xen Hypervisor on boot.</p>
+<pre tabindex=0><code>bundle agent detect_guest_files
+{
+    vars:
+
+      &quot;openvz_files&quot; slist =&gt; { &quot;/proc/vz/vzaquota&quot;, &quot;/proc/user_beancounters&quot; };
+      &quot;xen_dom0_files&quot; slist =&gt; { &quot;/proc/xen/capabilities&quot; };
+
+    classes:
+
+      linux::
+
+        &quot;openvz&quot; expression =&gt; fileexists(&quot;@(openvz_files)&quot;),
+          scope =&gt; &quot;namespace&quot;;
+
+        &quot;xen_dom0&quot; expression =&gt; fileexists(&quot;@(xen_dom0_files)&quot;),
+          scope =&gt; &quot;namespace&quot;;
+}
+</code></pre><h3 id=detecting-a-freebsd-virtualized-host>Detecting a FreeBSD virtualized host</h3>
+<p>When FreeBSD detects that it is being virtualized it will expose the hypervisor
+as a sysctl under kern.</p>
+<pre><code>$ sysctl -n kern.vm_guest
+xen
+</code></pre>
+<p>The possible values in FreeBSD include &ldquo;none&rdquo;, &ldquo;generic&rdquo;, &ldquo;xen&rdquo;, &ldquo;hv&rdquo;,
+&ldquo;vmware&rdquo;, and &ldquo;bhyve&rdquo; which makes it trivial to detect the most popular
+hypervisors. Using a method similiar to detection via the OUI, a data container
+called <code>$(fbsd_known_guest_vms)</code> is created that contains key value pairs of
+possible values that can be returned and the class we want to define if a
+<code>strcmp()</code> of that of key is true.</p>
+<p>The value of the variable <code>$(fbsd_vm_guest)</code> is set via the <code>execresult()</code>
+function which will run the command <code>sysctl -n kern.vm_guest</code>. The value of
+<code>$(fbsd_vm_guest)</code> is compared to every value in <code>$(fbsd_known_guest)</code> which
+are the keys of the data container <code>$(fbsd_known_guest_vms)</code></p>
+<pre tabindex=0><code>bundle agent detect_guest_freebsd
+{
+    vars:
+
+      freebsd::
+
+        &quot;fbsd_vm_guest&quot; string =&gt; execresult(&quot;$(paths.path[sysctl]) -n kern.vm_guest&quot;, &quot;noshell&quot;);
+
+        &quot;fbsd_known_guest_vms&quot; data =&gt; '{
+          &quot;xen&quot;:     &quot;xen_domu&quot;,
+          &quot;hv&quot;:      &quot;hyper_v&quot;,
+          &quot;vmware&quot;:  &quot;vmware&quot;,
+          &quot;generic&quot;: &quot;generic_hypervisor&quot;
+        }';
+
+        &quot;fbsd_known_guest&quot; slist =&gt; getindices(&quot;known_guest_vms&quot;);
+
+    classes:
+
+      freebsd::
+
+        &quot;found_vm_guest&quot; expression =&gt; strcmp(&quot;$(fbsd_known_guest)&quot;, &quot;$(fbsd_vm_guest)&quot;);
+
+          &quot;$(known_guest_vms[$(vm_guest)])&quot; expression =&gt; &quot;found_vm_guest&quot;,
+            scope =&gt; &quot;namespace&quot;;
+
+    reports:
+
+      found_vm_guest::
+
+        &quot;Host is Virtualized&quot;;
+
+      xen_domu::
+
+        &quot;Running on Xen&quot;;
+}
+</code></pre><p>Doing a test of this agent on a DomU FreeBSD host will set a &lsquo;xen_domu&rsquo; class
+and report that the host is virtualized.</p>
+<pre><code>$ uname -sr
+FreeBSD 12.0-CURRENT
+
+$ cf-agent -f ./vm.cf -b detect_guest_freebsd
+R: Host is Virtualized
+R: Running on Xen
+</code></pre>
+</section>
+<div class=post-tags>
+<nav class="nav tags">
+<ul class=tags>
+<li><a href=/tags/cfengine>cfengine</a></li>
+</ul>
+</nav>
+</div>
+</article>
+</main>
+<footer>
+<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|⚡️
+2021 © Steven Kreuzer | <a href=https://github.com/athul/archie>Archie Theme</a> | Built with <a href=https://gohugo.io>Hugo</a>
+</footer>
+<script>feather.replace()</script></div>
+</body>
+</html>

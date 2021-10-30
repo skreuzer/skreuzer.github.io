@@ -1,0 +1,86 @@
+<!doctype html><html><head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge"><title>Use realpath to work around the CFEngine 3.5.3 symlink change - Steven Kreuzer</title><meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="In CFEngine 3.5.3, a symlink created by a user pointing to resources owned by a different user is no longer followed. This is an intential change and while it makes sense from a security standpoint, people who came to depend on the old behavior and built tooling and infrastructre around it found themselves in a bit of a bind.
+As best as I can tell there is no way to override this behavior and the end result is that it is causing several promises which are part of my release process to fail.">
+<meta property="og:image" content>
+<meta property="og:title" content="Use realpath to work around the CFEngine 3.5.3 symlink change">
+<meta property="og:description" content="In CFEngine 3.5.3, a symlink created by a user pointing to resources owned by a different user is no longer followed. This is an intential change and while it makes sense from a security standpoint, people who came to depend on the old behavior and built tooling and infrastructre around it found themselves in a bit of a bind.
+As best as I can tell there is no way to override this behavior and the end result is that it is causing several promises which are part of my release process to fail.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://steven.kreuzer.cx/posts/using-realpath/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2014-01-25T00:00:00+00:00">
+<meta property="article:modified_time" content="2014-01-25T00:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Use realpath to work around the CFEngine 3.5.3 symlink change">
+<meta name=twitter:description content="In CFEngine 3.5.3, a symlink created by a user pointing to resources owned by a different user is no longer followed. This is an intential change and while it makes sense from a security standpoint, people who came to depend on the old behavior and built tooling and infrastructre around it found themselves in a bit of a bind.
+As best as I can tell there is no way to override this behavior and the end result is that it is causing several promises which are part of my release process to fail.">
+<script src=https://steven.kreuzer.cxjs/feather.min.js></script>
+<link href=https://steven.kreuzer.cx/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css rel=stylesheet>
+<link rel=stylesheet type=text/css media=screen href=https://steven.kreuzer.cx/css/main.2f9b5946627215dc1ae7fa5f82bfc9cfcab000329136befeea5733f21e77d68f.css>
+</head>
+<body>
+<div class=content><header>
+<div class=main>
+<a href=https://steven.kreuzer.cx>Steven Kreuzer</a>
+</div>
+<nav>
+<a href=/>Home</a>
+<a href=/posts>All Posts</a>
+<a href=/tags>Tags</a>
+</nav>
+</header>
+<main>
+<article>
+<div class=title>
+<h1 class=title>Use realpath to work around the CFEngine 3.5.3 symlink change</h1>
+<div class=meta>Posted on Jan 25, 2014</div>
+</div>
+<section class=body>
+<p>In CFEngine 3.5.3, a symlink created by a user pointing to resources owned by a
+different user is no longer followed. This is an intential change and while it makes
+sense from a security standpoint, people who came to depend on the old behavior and
+built tooling and infrastructre around it found themselves in a bit of a bind.</p>
+<p>As best as I can tell there is no way to override this behavior and the end result
+is that it is causing several promises which are part of my release process to fail.
+On each machine I expect /opt to be a symlink with the permissions <code>root:wheel</code> that
+is pointing to a &lsquo;current&rsquo; symlink on an NFS volume that is owned by the build user
+which is pointing to our most recent release.</p>
+<p>When a new release is ready, the build user has the ability to flip the
+&lsquo;current&rsquo; symlink to point at the new release automatically. In the event that
+we need to roll back to a known good state, it is as simple as switching the
+&lsquo;current&rsquo; symlink to point at previous build.</p>
+<p>This issue can be worked around using <code>realpath</code> which will return the resolved
+physical path of the path passed to it. I opened a <a href=https://github.com/cfengine/masterfiles/pull/100>pull request</a>
+which adds the path to the realpath binary into the stdlib so you can simply reference
+<code>$(paths.path[realpath])</code> in your agent.</p>
+<pre tabindex=0><code>bundle agent copy_release
+{
+    vars:
+
+        &quot;file&quot;     slist  =&gt; { &quot;foo.py&quot;, &quot;bar.py&quot;, &quot;baz.py&quot; };
+        &quot;src_path&quot; string =&gt; execresult(&quot;$(paths.path[realpath]) /opt&quot;, &quot;noshell&quot;)
+
+    files:
+
+        &quot;/usr/local/bin/$(file)&quot;
+            copy_from =&gt; local_dcp(&quot;$(src_path)/$(file)&quot;);
+}
+</code></pre><p>The pull request has been accepted and it has been merged into back into <a href=https://github.com/cfengine/masterfiles>cfengine/masterfiles</a>.</p>
+</section>
+<div class=post-tags>
+<nav class="nav tags">
+<ul class=tags>
+<li><a href=/tags/cfengine>cfengine</a></li>
+</ul>
+</nav>
+</div>
+</article>
+</main>
+<footer>
+<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|⚡️
+2021 © Steven Kreuzer | <a href=https://github.com/athul/archie>Archie Theme</a> | Built with <a href=https://gohugo.io>Hugo</a>
+</footer>
+<script>feather.replace()</script></div>
+</body>
+</html>

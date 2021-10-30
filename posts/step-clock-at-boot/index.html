@@ -1,0 +1,77 @@
+<!doctype html><html><head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge"><title>Stepping the system clock during boot - Steven Kreuzer</title><meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="FreeBSD allows you to perform an instantaneous change to your system clock while the host is booting up no matter how great the difference between a machine&rsquo;s current clock setting and the correct time.
+Use the sysrc command as root to append ntpdate_enable and ntpdate_hosts to /etc/rc.conf
+$ sysrc ntpdate_enable=YES ntpdate_enable: NO -> YES $ sysrc ntpdate_hosts=north-america.pool.ntp.org ntpdate_hosts: -> north-america.pool.ntp.org  Finally, to verify that everything worked correctly
+$ grep ntpdate /etc/rc.">
+<meta property="og:image" content>
+<meta property="og:title" content="Stepping the system clock during boot">
+<meta property="og:description" content="FreeBSD allows you to perform an instantaneous change to your system clock while the host is booting up no matter how great the difference between a machine&rsquo;s current clock setting and the correct time.
+Use the sysrc command as root to append ntpdate_enable and ntpdate_hosts to /etc/rc.conf
+$ sysrc ntpdate_enable=YES ntpdate_enable: NO -> YES $ sysrc ntpdate_hosts=north-america.pool.ntp.org ntpdate_hosts: -> north-america.pool.ntp.org  Finally, to verify that everything worked correctly
+$ grep ntpdate /etc/rc.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://steven.kreuzer.cx/posts/step-clock-at-boot/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2011-12-19T00:00:00+00:00">
+<meta property="article:modified_time" content="2011-12-19T00:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Stepping the system clock during boot">
+<meta name=twitter:description content="FreeBSD allows you to perform an instantaneous change to your system clock while the host is booting up no matter how great the difference between a machine&rsquo;s current clock setting and the correct time.
+Use the sysrc command as root to append ntpdate_enable and ntpdate_hosts to /etc/rc.conf
+$ sysrc ntpdate_enable=YES ntpdate_enable: NO -> YES $ sysrc ntpdate_hosts=north-america.pool.ntp.org ntpdate_hosts: -> north-america.pool.ntp.org  Finally, to verify that everything worked correctly
+$ grep ntpdate /etc/rc.">
+<script src=https://steven.kreuzer.cxjs/feather.min.js></script>
+<link href=https://steven.kreuzer.cx/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css rel=stylesheet>
+<link rel=stylesheet type=text/css media=screen href=https://steven.kreuzer.cx/css/main.2f9b5946627215dc1ae7fa5f82bfc9cfcab000329136befeea5733f21e77d68f.css>
+</head>
+<body>
+<div class=content><header>
+<div class=main>
+<a href=https://steven.kreuzer.cx>Steven Kreuzer</a>
+</div>
+<nav>
+<a href=/>Home</a>
+<a href=/posts>All Posts</a>
+<a href=/tags>Tags</a>
+</nav>
+</header>
+<main>
+<article>
+<div class=title>
+<h1 class=title>Stepping the system clock during boot</h1>
+<div class=meta>Posted on Dec 19, 2011</div>
+</div>
+<section class=body>
+<p>FreeBSD allows you to perform an instantaneous change to your system clock while
+the host is booting up no matter how great the difference between a machine&rsquo;s
+current clock setting and the correct time.</p>
+<p>Use the <code>sysrc</code> command as root to append ntpdate_enable and ntpdate_hosts to
+/etc/rc.conf</p>
+<pre><code>$ sysrc ntpdate_enable=YES
+ntpdate_enable: NO -&gt; YES
+$ sysrc ntpdate_hosts=north-america.pool.ntp.org
+ntpdate_hosts:  -&gt; north-america.pool.ntp.org
+</code></pre>
+<p>Finally, to verify that everything worked correctly</p>
+<pre><code>$ grep ntpdate /etc/rc.conf
+ntpdate_enable=&quot;YES&quot;
+ntpdate_hosts=&quot;north-america.pool.ntp.org&quot;
+</code></pre>
+</section>
+<div class=post-tags>
+<nav class="nav tags">
+<ul class=tags>
+<li><a href=/tags/freebsd>freebsd</a></li>
+</ul>
+</nav>
+</div>
+</article>
+</main>
+<footer>
+<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|⚡️
+2021 © Steven Kreuzer | <a href=https://github.com/athul/archie>Archie Theme</a> | Built with <a href=https://gohugo.io>Hugo</a>
+</footer>
+<script>feather.replace()</script></div>
+</body>
+</html>

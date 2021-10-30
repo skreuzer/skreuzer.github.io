@@ -1,0 +1,98 @@
+<!doctype html><html><head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge"><title>Using blowfish for password hashes in FreeBSD - Steven Kreuzer</title><meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="FreeBSD uses sha512 to encrypted passwords for user accounts. However, blowfish is available in all recent versions of FreeBSD and its easy to change the default crypt method to use blowfish instead
+In /etc/login.conf change
+:passwd_format=sha512:  to
+:passwd_format=blf:  and recreate the login capability database with the command cap_mkdb /etc/login.conf
+Now have each user change their password. Start with your current login.
+$ passwd Changing local password for {current user}.">
+<meta property="og:image" content>
+<meta property="og:title" content="Using blowfish for password hashes in FreeBSD">
+<meta property="og:description" content="FreeBSD uses sha512 to encrypted passwords for user accounts. However, blowfish is available in all recent versions of FreeBSD and its easy to change the default crypt method to use blowfish instead
+In /etc/login.conf change
+:passwd_format=sha512:  to
+:passwd_format=blf:  and recreate the login capability database with the command cap_mkdb /etc/login.conf
+Now have each user change their password. Start with your current login.
+$ passwd Changing local password for {current user}.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://steven.kreuzer.cx/posts/blowfish/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2011-12-24T00:00:00+00:00">
+<meta property="article:modified_time" content="2011-12-24T00:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Using blowfish for password hashes in FreeBSD">
+<meta name=twitter:description content="FreeBSD uses sha512 to encrypted passwords for user accounts. However, blowfish is available in all recent versions of FreeBSD and its easy to change the default crypt method to use blowfish instead
+In /etc/login.conf change
+:passwd_format=sha512:  to
+:passwd_format=blf:  and recreate the login capability database with the command cap_mkdb /etc/login.conf
+Now have each user change their password. Start with your current login.
+$ passwd Changing local password for {current user}.">
+<script src=https://steven.kreuzer.cxjs/feather.min.js></script>
+<link href=https://steven.kreuzer.cx/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css rel=stylesheet>
+<link rel=stylesheet type=text/css media=screen href=https://steven.kreuzer.cx/css/main.2f9b5946627215dc1ae7fa5f82bfc9cfcab000329136befeea5733f21e77d68f.css>
+</head>
+<body>
+<div class=content><header>
+<div class=main>
+<a href=https://steven.kreuzer.cx>Steven Kreuzer</a>
+</div>
+<nav>
+<a href=/>Home</a>
+<a href=/posts>All Posts</a>
+<a href=/tags>Tags</a>
+</nav>
+</header>
+<main>
+<article>
+<div class=title>
+<h1 class=title>Using blowfish for password hashes in FreeBSD</h1>
+<div class=meta>Posted on Dec 24, 2011</div>
+</div>
+<section class=body>
+<p>FreeBSD uses sha512 to encrypted passwords for user accounts.
+However, blowfish is available in all recent versions of FreeBSD
+and its easy to change the default crypt method to use blowfish instead</p>
+<p>In /etc/login.conf change</p>
+<pre><code>:passwd_format=sha512:
+</code></pre>
+<p>to</p>
+<pre><code>:passwd_format=blf:
+</code></pre>
+<p>and recreate the login capability database with the command <code>cap_mkdb /etc/login.conf</code></p>
+<p>Now have each user change their password. Start with your current login.</p>
+<pre><code>$ passwd
+Changing local password for {current user}.
+new password:
+retype new password:
+passwd: updating the database. . .
+passwd: done
+</code></pre>
+<p>The second field in your password file, which is the cipher of the
+passwords, should begin with $2 now which indicates the use of
+blowfish. The command <code>grep ${USER} /etc/master.passwd | cut -d: -f2</code>
+can be used to verify the change.</p>
+<p>Then in /etc/auth.conf change</p>
+<pre><code>#crypt_default = md5 des
+</code></pre>
+<p>to</p>
+<pre><code>crypt_default = blf md5 des
+</code></pre>
+<p>All new users you now create with adduser will now have their password
+encrypted in Blowfish.</p>
+</section>
+<div class=post-tags>
+<nav class="nav tags">
+<ul class=tags>
+<li><a href=/tags/freebsd>freebsd</a></li>
+</ul>
+</nav>
+</div>
+</article>
+</main>
+<footer>
+<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|⚡️
+2021 © Steven Kreuzer | <a href=https://github.com/athul/archie>Archie Theme</a> | Built with <a href=https://gohugo.io>Hugo</a>
+</footer>
+<script>feather.replace()</script></div>
+</body>
+</html>

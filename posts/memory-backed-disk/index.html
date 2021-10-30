@@ -1,0 +1,69 @@
+<!doctype html><html><head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge"><title>Creating a File-Backed Disk with mdconfig - Steven Kreuzer</title><meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="$ dd if=/dev/zero of=newimage bs=1k count=5k 5120+0 records in 5120+0 records out $ mdconfig -a -t vnode -f newimage -u 0 $ bsdlabel -w md0 auto $ newfs md0a /dev/md0a: 5.0MB (10224 sectors) block size 16384, fragment size 2048 using 4 cylinder groups of 1.25MB, 80 blks, 192 inodes. super-block backups (for fsck -b #) at: 160, 2720, 5280, 7840 $ mount /dev/md0a /mnt $ df /mnt Filesystem 1K-blocks Used Avail Capacity Mounted on /dev/md0a 4710 4 4330 0% /mnt ```sh ">
+<meta property="og:image" content>
+<meta property="og:title" content="Creating a File-Backed Disk with mdconfig">
+<meta property="og:description" content="$ dd if=/dev/zero of=newimage bs=1k count=5k 5120+0 records in 5120+0 records out $ mdconfig -a -t vnode -f newimage -u 0 $ bsdlabel -w md0 auto $ newfs md0a /dev/md0a: 5.0MB (10224 sectors) block size 16384, fragment size 2048 using 4 cylinder groups of 1.25MB, 80 blks, 192 inodes. super-block backups (for fsck -b #) at: 160, 2720, 5280, 7840 $ mount /dev/md0a /mnt $ df /mnt Filesystem 1K-blocks Used Avail Capacity Mounted on /dev/md0a 4710 4 4330 0% /mnt ```sh ">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://steven.kreuzer.cx/posts/memory-backed-disk/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2006-10-02T00:00:00+00:00">
+<meta property="article:modified_time" content="2006-10-02T00:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Creating a File-Backed Disk with mdconfig">
+<meta name=twitter:description content="$ dd if=/dev/zero of=newimage bs=1k count=5k 5120+0 records in 5120+0 records out $ mdconfig -a -t vnode -f newimage -u 0 $ bsdlabel -w md0 auto $ newfs md0a /dev/md0a: 5.0MB (10224 sectors) block size 16384, fragment size 2048 using 4 cylinder groups of 1.25MB, 80 blks, 192 inodes. super-block backups (for fsck -b #) at: 160, 2720, 5280, 7840 $ mount /dev/md0a /mnt $ df /mnt Filesystem 1K-blocks Used Avail Capacity Mounted on /dev/md0a 4710 4 4330 0% /mnt ```sh ">
+<script src=https://steven.kreuzer.cxjs/feather.min.js></script>
+<link href=https://steven.kreuzer.cx/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css rel=stylesheet>
+<link rel=stylesheet type=text/css media=screen href=https://steven.kreuzer.cx/css/main.2f9b5946627215dc1ae7fa5f82bfc9cfcab000329136befeea5733f21e77d68f.css>
+</head>
+<body>
+<div class=content><header>
+<div class=main>
+<a href=https://steven.kreuzer.cx>Steven Kreuzer</a>
+</div>
+<nav>
+<a href=/>Home</a>
+<a href=/posts>All Posts</a>
+<a href=/tags>Tags</a>
+</nav>
+</header>
+<main>
+<article>
+<div class=title>
+<h1 class=title>Creating a File-Backed Disk with mdconfig</h1>
+<div class=meta>Posted on Oct 2, 2006</div>
+</div>
+<section class=body>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh>$ dd <span style=color:#66d9ef>if</span><span style=color:#f92672>=</span>/dev/zero of<span style=color:#f92672>=</span>newimage bs<span style=color:#f92672>=</span>1k count<span style=color:#f92672>=</span>5k
+5120+0 records in
+5120+0 records out
+$ mdconfig -a -t vnode -f newimage -u <span style=color:#ae81ff>0</span>
+$ bsdlabel -w md0 auto
+$ newfs md0a
+/dev/md0a: 5.0MB <span style=color:#f92672>(</span><span style=color:#ae81ff>10224</span> sectors<span style=color:#f92672>)</span> block size 16384, fragment size <span style=color:#ae81ff>2048</span>
+        using <span style=color:#ae81ff>4</span> cylinder groups of 1.25MB, <span style=color:#ae81ff>80</span> blks, <span style=color:#ae81ff>192</span> inodes.
+super-block backups <span style=color:#f92672>(</span><span style=color:#66d9ef>for</span> fsck -b <span style=color:#75715e>#) at:</span>
+ 160, 2720, 5280, <span style=color:#ae81ff>7840</span>
+$ mount /dev/md0a /mnt
+$ df /mnt
+Filesystem 1K-blocks Used Avail Capacity  Mounted on
+/dev/md0a       <span style=color:#ae81ff>4710</span>    <span style=color:#ae81ff>4</span>  <span style=color:#ae81ff>4330</span>     0%    /mnt
+<span style=color:#e6db74>```</span>sh
+</code></pre></div>
+</section>
+<div class=post-tags>
+<nav class="nav tags">
+<ul class=tags>
+<li><a href=/tags/freebsd>freebsd</a></li>
+</ul>
+</nav>
+</div>
+</article>
+</main>
+<footer>
+<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|⚡️
+2021 © Steven Kreuzer | <a href=https://github.com/athul/archie>Archie Theme</a> | Built with <a href=https://gohugo.io>Hugo</a>
+</footer>
+<script>feather.replace()</script></div>
+</body>
+</html>

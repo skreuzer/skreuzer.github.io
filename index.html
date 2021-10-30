@@ -1,0 +1,87 @@
+<!doctype html><html>
+<head>
+<meta name=generator content="Hugo 0.88.1">
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge"><title>Steven Kreuzer | Home </title><meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta property="og:image" content>
+<link rel=alternate type=application/rss+xml href=https://steven.kreuzer.cx/index.xml title="Steven Kreuzer">
+<meta property="og:title" content="Steven Kreuzer">
+<meta property="og:description" content>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://steven.kreuzer.cx/">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="Steven Kreuzer">
+<meta name=twitter:description content>
+<script src=https://steven.kreuzer.cxjs/feather.min.js></script>
+<link href=https://steven.kreuzer.cx/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css rel=stylesheet>
+<link rel=stylesheet type=text/css media=screen href=https://steven.kreuzer.cx/css/main.2f9b5946627215dc1ae7fa5f82bfc9cfcab000329136befeea5733f21e77d68f.css>
+</head>
+<body>
+<div class=content>
+<header>
+<div class=main>
+<a href=https://steven.kreuzer.cx>Steven Kreuzer</a>
+</div>
+<nav>
+<a href=/>Home</a>
+<a href=/posts>All Posts</a>
+<a href=/tags>Tags</a>
+</nav>
+</header>
+<main class=list>
+<div class=site-description></div>
+<section class=list-item>
+<h1 class=title><a href=/posts/cfengine-virtual-machines/>Detecting Virtual Machines in CFEngine</a></h1>
+<time>Dec 28, 2016</time>
+<br><div class=description>
+Out of the box CFEngine has some support for detecting if it is running on top of a hypervisor. Unfortunately, it appears that a regression was introduced in 3.6.0 which prevented cf-agent from detecting Xen and this functunality appears to have has never worked on FreeBSD as well.
+I submitted a pull request which addresses the issue documented in CFE-1563 but it will not be included in CFEngine 3.10 and right now only fixes the issue on Linux.&mldr;
+</div>
+<a href=/posts/cfengine-virtual-machines/>Read more ⟶</a>
+</section>
+<section class=list-item>
+<h1 class=title><a href=/posts/using-realpath/>Use realpath to work around the CFEngine 3.5.3 symlink change</a></h1>
+<time>Jan 25, 2014</time>
+<br><div class=description>
+In CFEngine 3.5.3, a symlink created by a user pointing to resources owned by a different user is no longer followed. This is an intential change and while it makes sense from a security standpoint, people who came to depend on the old behavior and built tooling and infrastructre around it found themselves in a bit of a bind.
+As best as I can tell there is no way to override this behavior and the end result is that it is causing several promises which are part of my release process to fail.&mldr;
+</div>
+<a href=/posts/using-realpath/>Read more ⟶</a>
+</section>
+<section class=list-item>
+<h1 class=title><a href=/posts/drive-referenced/>Determine what drive is referenced using the stats show disk command</a></h1>
+<time>Dec 4, 2013</time>
+<br><div class=description>
+Here is what a portion of the output from the stats show disk command looks like:
+disk:20000020:37F352F1:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:disk_busy:0%
+To determine what drive is being referenced above, copy the last 6 digits of the second set of numbers (i.e. F352F1) Run the storage show disk -a command and look for those digits in the WWN:
+Disk: 7a.21 Shelf: 1 Bay: 5 Serial: &lt;serial number> Vendor: NETAPP Model: X234_ST336704FC Rev: NA42 RPM: 10000 WWN: 2:000:002037:f352f1 Downrev: no Pri Port: B Sec Name: 8a.&mldr;
+</div>
+<a href=/posts/drive-referenced/>Read more ⟶</a>
+</section>
+<section class=list-item>
+<h1 class=title><a href=/posts/aborting-cfagent-execution/>Aborting execution of cf-agent</a></h1>
+<time>Oct 28, 2013</time>
+<br><div class=description>
+From time to time it might be necessary to temporary halt the execution of cf-agent for any number of reasons. If during a run the class halt_cfagent gets defined, cf-agent will exit its current run
+&mldr;
+</div>
+<a href=/posts/aborting-cfagent-execution/>Read more ⟶</a>
+</section>
+<ul class=pagination>
+<span class="page-item page-prev">
+</span>
+<span class="page-item page-next">
+<a href=/page/2/ class=page-link aria-label=Next><span aria-hidden=true>Next →</span></a>
+</span>
+</ul>
+</main>
+<footer>
+<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|⚡️
+2021 © Steven Kreuzer | <a href=https://github.com/athul/archie>Archie Theme</a> | Built with <a href=https://gohugo.io>Hugo</a>
+</footer>
+<script>feather.replace()</script>
+</div>
+</body>
+</html>
