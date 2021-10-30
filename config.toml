@@ -1,4 +1,4 @@
-baseURL = 'https://steven.kreuzer.cx'
+baseURL = 'https://steven.kreuzer.cx/'
 languageCode = 'en-us'
 title = 'Steven Kreuzer'
 theme = 'archie'
