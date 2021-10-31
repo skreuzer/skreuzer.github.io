@@ -3,7 +3,7 @@ languageCode = 'en-us'
 title = 'Steven Kreuzer'
 theme = 'archie'
 copyright = "© Steven Kreuzer"
-paginate = 4
+paginate = 3
 
 [[params.social]]
 name = "GitHub"
@@ -14,6 +14,11 @@ url = "https://github.com/skreuzer"
 name = "Twitter"
 icon = "twitter"
 url = "https://twitter.com/skreuzer"
+
+[[params.social]]
+name = "LinkedIn"
+icon = "linkedin"
+url = "https://www.linkedin.com/in/skreuzer"
 
 [[menu.main]]
 name = "Home"
