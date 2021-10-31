@@ -1,12 +1,12 @@
 <!doctype html><html><head>
 <meta charset=utf-8>
 <meta http-equiv=x-ua-compatible content="IE=edge"><title>Storing IP addresses in MySQL - Steven Kreuzer</title><meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content="Lets say you have an IP address, 192.168.0.10, and want to store it in a table. The most common method people seem to use it to store it as a CHAR(15).
+<meta name=description content="Lets say you have the IP address 192.168.0.10 and want to store it in a table. The most common method people seem to use it to store it as a CHAR(15).
 However, you probably want to search on this column and therefore want an index on it.
 MySQL has two built-in functions, INET_ATON() which converts Internet addresses from the numbers-and-dots notation into a 32-bit unsigned integer, and INET_NTOA() which does the opposite.">
 <meta property="og:image" content>
 <meta property="og:title" content="Storing IP addresses in MySQL">
-<meta property="og:description" content="Lets say you have an IP address, 192.168.0.10, and want to store it in a table. The most common method people seem to use it to store it as a CHAR(15).
+<meta property="og:description" content="Lets say you have the IP address 192.168.0.10 and want to store it in a table. The most common method people seem to use it to store it as a CHAR(15).
 However, you probably want to search on this column and therefore want an index on it.
 MySQL has two built-in functions, INET_ATON() which converts Internet addresses from the numbers-and-dots notation into a 32-bit unsigned integer, and INET_NTOA() which does the opposite.">
 <meta property="og:type" content="article">
@@ -15,7 +15,7 @@ MySQL has two built-in functions, INET_ATON() which converts Internet addresses 
 <meta property="article:modified_time" content="2006-08-03T00:00:00+00:00">
 <meta name=twitter:card content="summary">
 <meta name=twitter:title content="Storing IP addresses in MySQL">
-<meta name=twitter:description content="Lets say you have an IP address, 192.168.0.10, and want to store it in a table. The most common method people seem to use it to store it as a CHAR(15).
+<meta name=twitter:description content="Lets say you have the IP address 192.168.0.10 and want to store it in a table. The most common method people seem to use it to store it as a CHAR(15).
 However, you probably want to search on this column and therefore want an index on it.
 MySQL has two built-in functions, INET_ATON() which converts Internet addresses from the numbers-and-dots notation into a 32-bit unsigned integer, and INET_NTOA() which does the opposite.">
 <script src=https://steven.kreuzer.cx/js/feather.min.js></script>
@@ -40,49 +40,47 @@ MySQL has two built-in functions, INET_ATON() which converts Internet addresses 
 <div class=meta>Posted on Aug 3, 2006</div>
 </div>
 <section class=body>
-<p>Lets say you have an IP address, 192.168.0.10, and want to store it in a
+<p>Lets say you have the IP address 192.168.0.10 and want to store it in a
 table. The most common method people seem to use it to store it as a CHAR(15).</p>
 <p>However, you probably want to search on this column and therefore want
 an index on it.</p>
-<p>MySQL has two built-in functions, INET_ATON() which converts Internet addresses
-from the numbers-and-dots notation into a 32-bit unsigned integer, and INET_NTOA()
+<p>MySQL has two built-in functions, <code>INET_ATON()</code> which converts Internet addresses
+from the numbers-and-dots notation into a 32-bit unsigned integer, and <code>INET_NTOA()</code>
 which does the opposite.</p>
-<p>Putting it to the test:</p>
-<p>{% highlight mysql %}
-mysql> SELECT INET_ATON(&lsquo;192.168.0.10&rsquo;) AS ipn;
-+&mdash;&mdash;&mdash;&mdash;+
-| ipn |
-+&mdash;&mdash;&mdash;&mdash;+
-| 3232235530 |
-+&mdash;&mdash;&mdash;&mdash;+</p>
-<p>mysql> SELECT INET_NTOA(3232235530) AS ipa;
-+&mdash;&mdash;&mdash;&mdash;&ndash;+
-| ipa |
-+&mdash;&mdash;&mdash;&mdash;&ndash;+
-| 192.168.0.10 |
-+&mdash;&mdash;&mdash;&mdash;&ndash;+
-{% endhighlight %}</p>
-<p>So you can store an IP address in an INT UNSIGNED (4 bytes) which is
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-mysql data-lang=mysql>mysql<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>SELECT</span> <span style=color:#a6e22e>INET_ATON</span>(<span style=color:#e6db74>&#39;192.168.0.10&#39;</span>) <span style=color:#66d9ef>AS</span> ipn;
+<span style=color:#f92672>+------------+</span>
+<span style=color:#f92672>|</span> ipn        <span style=color:#f92672>|</span>
+<span style=color:#f92672>+------------+</span>
+<span style=color:#f92672>|</span> <span style=color:#ae81ff>3232235530</span> <span style=color:#f92672>|</span>
+<span style=color:#f92672>+------------+</span>
+
+mysql<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>SELECT</span> <span style=color:#a6e22e>INET_NTOA</span>(<span style=color:#ae81ff>3232235530</span>) <span style=color:#66d9ef>AS</span> ipa;
+<span style=color:#f92672>+--------------+</span>
+<span style=color:#f92672>|</span> ipa          <span style=color:#f92672>|</span>
+<span style=color:#f92672>+--------------+</span>
+<span style=color:#f92672>|</span> <span style=color:#ae81ff>192</span>.<span style=color:#ae81ff>168</span>.<span style=color:#ae81ff>0</span>.<span style=color:#ae81ff>10</span> <span style=color:#f92672>|</span>
+<span style=color:#f92672>+--------------+</span>
+</code></pre></div><p>So you can store an IP address in an INT UNSIGNED (4 bytes) which is
 more efficient and faster than a CHAR(15). Naturally, you can
 call the function while you&rsquo;re inserting, so something like this is fine
 also:</p>
-<p>{% highlight mysql %}
-INSERT INTO tbl VALUES (&mldr;, INET_ATON(&lsquo;192.168.0.10&rsquo;), &mldr;)
-{% endhighlight %}</p>
-<p>In MySQL 5.0, you can even do this transformation inside a LOAD DATA INFILE
-command, without using temporary columns:</p>
-<p>{% highlight mysql %}
-LOAD DATA INFILE &lsquo;filename&rsquo;
-INTO TABLE tbl
-&mldr;
-(col1, &mldr;, @ipa1, &mldr;, coln)
-SET ipn = INET_ATON(@ipa);
-{% endhighlight %}</p>
-<p>So in the list of columns you assign this column to a server-side
-variable, and then assign the transformed value to the proper column in
-the SET clause.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-mysql data-lang=mysql><span style=color:#66d9ef>INSERT</span> <span style=color:#66d9ef>INTO</span> tbl <span style=color:#66d9ef>VALUES</span> (..., <span style=color:#a6e22e>INET_ATON</span>(<span style=color:#e6db74>&#39;192.168.0.10&#39;</span>), ...)
+</code></pre></div><p>In MySQL 5.0, you can even do this transformation inside a LOAD DATA INFILE
+command without using temporary columns:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-mysql data-lang=mysql><span style=color:#66d9ef>LOAD</span> DATA <span style=color:#66d9ef>INFILE</span> <span style=color:#e6db74>&#39;filename&#39;</span>
+<span style=color:#66d9ef>INTO</span> <span style=color:#66d9ef>TABLE</span> tbl
+...
+(col1, ..., <span style=color:#f92672>@</span>ipa1, ..., coln)
+<span style=color:#66d9ef>SET</span> ipn <span style=color:#f92672>=</span> <span style=color:#a6e22e>INET_ATON</span>(<span style=color:#f92672>@</span>ipa);
+</code></pre></div><p>So in the list of columns you assign this column to a server-side variable, and
+then assign the transformed value to the proper column in the SET clause.</p>
 </section>
 <div class=post-tags>
+<nav class="nav tags">
+<ul class=tags>
+<li><a href=/tags/mysql>mysql</a></li>
+</ul>
+</nav>
 </div>
 </article>
 </main>

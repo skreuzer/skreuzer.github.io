@@ -32,30 +32,6 @@
 <main class=list>
 <div class=site-description></div>
 <section class=list-item>
-<h1 class=title><a href=/posts/blowfish/>Using blowfish for password hashes in FreeBSD</a></h1>
-<time>Dec 24, 2011</time>
-<br><div class=description>
-FreeBSD uses sha512 to encrypted passwords for user accounts. However, blowfish is available in all recent versions of FreeBSD and its easy to change the default crypt method to use blowfish instead
-In /etc/login.conf change
-:passwd_format=sha512: to
-:passwd_format=blf: and recreate the login capability database with the command cap_mkdb /etc/login.conf
-Now have each user change their password. Start with your current login.
-$ passwd Changing local password for {current user}.&mldr;
-</div>
-<a href=/posts/blowfish/>Read more ⟶</a>
-</section>
-<section class=list-item>
-<h1 class=title><a href=/posts/step-clock-at-boot/>Stepping the system clock during boot</a></h1>
-<time>Dec 19, 2011</time>
-<br><div class=description>
-FreeBSD allows you to perform an instantaneous change to your system clock while the host is booting up no matter how great the difference between a machine&rsquo;s current clock setting and the correct time.
-Use the sysrc command as root to append ntpdate_enable and ntpdate_hosts to /etc/rc.conf
-$ sysrc ntpdate_enable=YES ntpdate_enable: NO -> YES $ sysrc ntpdate_hosts=north-america.pool.ntp.org ntpdate_hosts: -> north-america.pool.ntp.org Finally, to verify that everything worked correctly
-$ grep ntpdate /etc/rc.&mldr;
-</div>
-<a href=/posts/step-clock-at-boot/>Read more ⟶</a>
-</section>
-<section class=list-item>
 <h1 class=title><a href=/posts/running-csup-from-periodic/>Running csup from periodic</a></h1>
 <time>Jul 5, 2010</time>
 <br><div class=description>
@@ -63,6 +39,22 @@ I keep a copy of the FreeBSD source and ports repository locally on disk so its 
 However, I rewrote the script to be a job that is executed by periodic and then have the output of csup included with the daily run output emails I get each morning so I can quickly see the changes to the ports tree.&mldr;
 </div>
 <a href=/posts/running-csup-from-periodic/>Read more ⟶</a>
+</section>
+<section class=list-item>
+<h1 class=title><a href=/posts/reflections-after-one-year/>Reflections after one year</a></h1>
+<time>Mar 11, 2010</time>
+<br><div class=description>
+Today marks my 1 year anniversary as a FreeBSD developer. I opened my first Problem Report in 2006 and after roughly three years of hacking on the ports system, wxs@ offered to mentor me and on March 11th, 2009 I received an email saying that the port-mgr@ team approved his request for a commit bit for me. I happened to be on vacation in Mexico when I got the email, and just like that a good day turned even better.&mldr;
+</div>
+<a href=/posts/reflections-after-one-year/>Read more ⟶</a>
+</section>
+<section class=list-item>
+<h1 class=title><a href=/posts/sun-v210-donation/>Sun v210 Donation</a></h1>
+<time>Mar 11, 2010</time>
+<br><div class=description>
+Thanks to a generous donation by Nathan Whitehorn, a Sun SunFire v210 is sitting on the floor of my office waiting to have FreeBSD installed on it. Since this is the fastest sparc64 machine we have, Mark Linimon and I are planning on using it as a package building machine. However, if there is any other developer who would like to use it as a reference platform, please get in touch with me and I will set you up with access.&mldr;
+</div>
+<a href=/posts/sun-v210-donation/>Read more ⟶</a>
 </section>
 <ul class=pagination>
 <span class="page-item page-prev">

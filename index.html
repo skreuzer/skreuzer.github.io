@@ -50,15 +50,13 @@ As best as I can tell there is no way to override this behavior and the end resu
 <a href=/posts/using-realpath/>Read more ⟶</a>
 </section>
 <section class=list-item>
-<h1 class=title><a href=/posts/drive-referenced/>Determine what drive is referenced using the stats show disk command</a></h1>
-<time>Dec 4, 2013</time>
+<h1 class=title><a href=/posts/aborting-cfagent-execution/>Aborting execution of cf-agent</a></h1>
+<time>Oct 28, 2013</time>
 <br><div class=description>
-Here is what a portion of the output from the stats show disk command looks like:
-disk:20000020:37F352F1:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:disk_busy:0%
-To determine what drive is being referenced above, copy the last 6 digits of the second set of numbers (i.e. F352F1) Run the storage show disk -a command and look for those digits in the WWN:
-Disk: 7a.21 Shelf: 1 Bay: 5 Serial: &lt;serial number> Vendor: NETAPP Model: X234_ST336704FC Rev: NA42 RPM: 10000 WWN: 2:000:002037:f352f1 Downrev: no Pri Port: B Sec Name: 8a.&mldr;
+From time to time it might be necessary to temporary halt the execution of cf-agent for any number of reasons. If during a run the class halt_cfagent gets defined, cf-agent will exit its current run
+&mldr;
 </div>
-<a href=/posts/drive-referenced/>Read more ⟶</a>
+<a href=/posts/aborting-cfagent-execution/>Read more ⟶</a>
 </section>
 <ul class=pagination>
 <span class="page-item page-prev">
