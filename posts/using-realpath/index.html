@@ -15,14 +15,14 @@ As best as I can tell there is no way to override this behavior and the end resu
 <meta name=twitter:title content="Use realpath to work around the CFEngine 3.5.3 symlink change">
 <meta name=twitter:description content="In CFEngine 3.5.3, a symlink created by a user pointing to resources owned by a different user is no longer followed. This is an intential change and while it makes sense from a security standpoint, people who came to depend on the old behavior and built tooling and infrastructre around it found themselves in a bit of a bind.
 As best as I can tell there is no way to override this behavior and the end result is that it is causing several promises which are part of my release process to fail.">
-<script src=https://steven.kreuzer.cxjs/feather.min.js></script>
+<script src=https://steven.kreuzer.cx/js/feather.min.js></script>
 <link href=https://steven.kreuzer.cx/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css rel=stylesheet>
 <link rel=stylesheet type=text/css media=screen href=https://steven.kreuzer.cx/css/main.2f9b5946627215dc1ae7fa5f82bfc9cfcab000329136befeea5733f21e77d68f.css>
 </head>
 <body>
 <div class=content><header>
 <div class=main>
-<a href=https://steven.kreuzer.cx>Steven Kreuzer</a>
+<a href=https://steven.kreuzer.cx/>Steven Kreuzer</a>
 </div>
 <nav>
 <a href=/>Home</a>
@@ -54,19 +54,19 @@ we need to roll back to a known good state, it is as simple as switching the
 physical path of the path passed to it. I opened a <a href=https://github.com/cfengine/masterfiles/pull/100>pull request</a>
 which adds the path to the realpath binary into the stdlib so you can simply reference
 <code>$(paths.path[realpath])</code> in your agent.</p>
-<pre tabindex=0><code>bundle agent copy_release
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>bundle agent copy_release
 {
     vars:
 
-        &quot;file&quot;     slist  =&gt; { &quot;foo.py&quot;, &quot;bar.py&quot;, &quot;baz.py&quot; };
-        &quot;src_path&quot; string =&gt; execresult(&quot;$(paths.path[realpath]) /opt&quot;, &quot;noshell&quot;)
+        &#34;file&#34;     slist  =&gt; { &#34;foo.py&#34;, &#34;bar.py&#34;, &#34;baz.py&#34; };
+        &#34;src_path&#34; string =&gt; execresult(&#34;$(paths.path[realpath]) /opt&#34;, &#34;noshell&#34;)
 
     files:
 
-        &quot;/usr/local/bin/$(file)&quot;
-            copy_from =&gt; local_dcp(&quot;$(src_path)/$(file)&quot;);
+        &#34;/usr/local/bin/$(file)&#34;
+            copy_from =&gt; local_dcp(&#34;$(src_path)/$(file)&#34;);
 }
-</code></pre><p>The pull request has been accepted and it has been merged into back into <a href=https://github.com/cfengine/masterfiles>cfengine/masterfiles</a>.</p>
+</code></pre></div><p>The pull request has been accepted and it has been merged into back into <a href=https://github.com/cfengine/masterfiles>cfengine/masterfiles</a>.</p>
 </section>
 <div class=post-tags>
 <nav class="nav tags">
@@ -78,7 +78,7 @@ which adds the path to the realpath binary into the stdlib so you can simply ref
 </article>
 </main>
 <footer>
-<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|⚡️
+<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|<a class=soc href=https://www.linkedin.com/in/skreuzer title=LinkedIn><i data-feather=linkedin></i></a>|⚡️
 2021 © Steven Kreuzer | <a href=https://github.com/athul/archie>Archie Theme</a> | Built with <a href=https://gohugo.io>Hugo</a>
 </footer>
 <script>feather.replace()</script></div>

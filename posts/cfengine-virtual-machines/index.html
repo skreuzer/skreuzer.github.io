@@ -15,14 +15,14 @@ I submitted a pull request which addresses the issue documented in CFE-1563 but 
 <meta name=twitter:title content="Detecting Virtual Machines in CFEngine">
 <meta name=twitter:description content="Out of the box CFEngine has some support for detecting if it is running on top of a hypervisor. Unfortunately, it appears that a regression was introduced in 3.6.0 which prevented cf-agent from detecting Xen and this functunality appears to have has never worked on FreeBSD as well.
 I submitted a pull request which addresses the issue documented in CFE-1563 but it will not be included in CFEngine 3.10 and right now only fixes the issue on Linux.">
-<script src=https://steven.kreuzer.cxjs/feather.min.js></script>
+<script src=https://steven.kreuzer.cx/js/feather.min.js></script>
 <link href=https://steven.kreuzer.cx/css/fonts.b685ac6f654695232de7b82a9143a46f9e049c8e3af3a21d9737b01f4be211d1.css rel=stylesheet>
 <link rel=stylesheet type=text/css media=screen href=https://steven.kreuzer.cx/css/main.2f9b5946627215dc1ae7fa5f82bfc9cfcab000329136befeea5733f21e77d68f.css>
 </head>
 <body>
 <div class=content><header>
 <div class=main>
-<a href=https://steven.kreuzer.cx>Steven Kreuzer</a>
+<a href=https://steven.kreuzer.cx/>Steven Kreuzer</a>
 </div>
 <nav>
 <a href=/>Home</a>
@@ -75,32 +75,32 @@ The <code>string_downcase()</code> function is used to convert it to lower case 
 that <code>strcmp()</code> is used to iterate through all the keys in the <code>$(vm_ouis)</code>
 data container looking for a match. If one is found a class based on the value
 of the matching key will be defined.</p>
-<pre tabindex=0><code>bundle agent detect_guest_oui
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>bundle agent detect_guest_oui
 {
     vars:
 
-        &quot;mac_address&quot; string =&gt; string_downcase(string_head(&quot;$(sys.hardware_mac[$(sys.interface)])&quot;, &quot;8&quot;));
+        &#34;mac_address&#34; string =&gt; string_downcase(string_head(&#34;$(sys.hardware_mac[$(sys.interface)])&#34;, &#34;8&#34;));
 
-        &quot;vm_ouis&quot; data =&gt; '{
-            &quot;00:05:69&quot;: &quot;vmware&quot;,
-            &quot;00:0c:29&quot;: &quot;vmware&quot;,
-            &quot;00:1c:14&quot;: &quot;vmware&quot;,
-            &quot;00:50:56&quot;: &quot;vmware&quot;,
-            &quot;00:15:5d&quot;: &quot;hyper_v&quot;,
-            &quot;00:16:3e&quot;: &quot;xen_domu&quot;,
-            &quot;58:9c:fc&quot;: &quot;bhyve&quot;,
-        }';
+        &#34;vm_ouis&#34; data =&gt; &#39;{
+            &#34;00:05:69&#34;: &#34;vmware&#34;,
+            &#34;00:0c:29&#34;: &#34;vmware&#34;,
+            &#34;00:1c:14&#34;: &#34;vmware&#34;,
+            &#34;00:50:56&#34;: &#34;vmware&#34;,
+            &#34;00:15:5d&#34;: &#34;hyper_v&#34;,
+            &#34;00:16:3e&#34;: &#34;xen_domu&#34;,
+            &#34;58:9c:fc&#34;: &#34;bhyve&#34;,
+        }&#39;;
 
-        &quot;vm_oui&quot; slist =&gt; getindices(&quot;vm_ouis&quot;);
+        &#34;vm_oui&#34; slist =&gt; getindices(&#34;vm_ouis&#34;);
 
     classes:
 
-        &quot;found_vm_mac&quot; expression =&gt; strcmp(&quot;$(mac_address)&quot;, &quot;$(vm_oui)&quot;);
+        &#34;found_vm_mac&#34; expression =&gt; strcmp(&#34;$(mac_address)&#34;, &#34;$(vm_oui)&#34;);
 
-        &quot;$(vm_ouis[$(mac_address)])&quot; expression =&gt; &quot;found_vm_mac&quot;,
-            scope =&gt; &quot;namespace&quot;;
+        &#34;$(vm_ouis[$(mac_address)])&#34; expression =&gt; &#34;found_vm_mac&#34;,
+            scope =&gt; &#34;namespace&#34;;
 }
-</code></pre><h3 id=detecting-virtualized-hosts-through-linuxs-proc-filesystem>Detecting virtualized hosts through Linux&rsquo;s /proc filesystem</h3>
+</code></pre></div><h3 id=detecting-virtualized-hosts-through-linuxs-proc-filesystem>Detecting virtualized hosts through Linux&rsquo;s /proc filesystem</h3>
 <p>The procfs filesystem on Linux is a special filesystem which presents various
 information about running processes. While procfs has been implemented in
 various different Unix-like operating systems it is slowly being depreciated in
@@ -111,24 +111,24 @@ being virtualized. This method is generally not as reliable since it may
 require special drivers to be installed on the guest host. We can also use this
 method to deteremine if the host is acting as the initial privileged domain
 (dom0) started by the Xen Hypervisor on boot.</p>
-<pre tabindex=0><code>bundle agent detect_guest_files
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>bundle agent detect_guest_files
 {
     vars:
 
-      &quot;openvz_files&quot; slist =&gt; { &quot;/proc/vz/vzaquota&quot;, &quot;/proc/user_beancounters&quot; };
-      &quot;xen_dom0_files&quot; slist =&gt; { &quot;/proc/xen/capabilities&quot; };
+      &#34;openvz_files&#34; slist =&gt; { &#34;/proc/vz/vzaquota&#34;, &#34;/proc/user_beancounters&#34; };
+      &#34;xen_dom0_files&#34; slist =&gt; { &#34;/proc/xen/capabilities&#34; };
 
     classes:
 
       linux::
 
-        &quot;openvz&quot; expression =&gt; fileexists(&quot;@(openvz_files)&quot;),
-          scope =&gt; &quot;namespace&quot;;
+        &#34;openvz&#34; expression =&gt; fileexists(&#34;@(openvz_files)&#34;),
+          scope =&gt; &#34;namespace&#34;;
 
-        &quot;xen_dom0&quot; expression =&gt; fileexists(&quot;@(xen_dom0_files)&quot;),
-          scope =&gt; &quot;namespace&quot;;
+        &#34;xen_dom0&#34; expression =&gt; fileexists(&#34;@(xen_dom0_files)&#34;),
+          scope =&gt; &#34;namespace&#34;;
 }
-</code></pre><h3 id=detecting-a-freebsd-virtualized-host>Detecting a FreeBSD virtualized host</h3>
+</code></pre></div><h3 id=detecting-a-freebsd-virtualized-host>Detecting a FreeBSD virtualized host</h3>
 <p>When FreeBSD detects that it is being virtualized it will expose the hypervisor
 as a sysctl under kern.</p>
 <pre><code>$ sysctl -n kern.vm_guest
@@ -144,43 +144,43 @@ possible values that can be returned and the class we want to define if a
 function which will run the command <code>sysctl -n kern.vm_guest</code>. The value of
 <code>$(fbsd_vm_guest)</code> is compared to every value in <code>$(fbsd_known_guest)</code> which
 are the keys of the data container <code>$(fbsd_known_guest_vms)</code></p>
-<pre tabindex=0><code>bundle agent detect_guest_freebsd
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>bundle agent detect_guest_freebsd
 {
     vars:
 
       freebsd::
 
-        &quot;fbsd_vm_guest&quot; string =&gt; execresult(&quot;$(paths.path[sysctl]) -n kern.vm_guest&quot;, &quot;noshell&quot;);
+        &#34;fbsd_vm_guest&#34; string =&gt; execresult(&#34;$(paths.path[sysctl]) -n kern.vm_guest&#34;, &#34;noshell&#34;);
 
-        &quot;fbsd_known_guest_vms&quot; data =&gt; '{
-          &quot;xen&quot;:     &quot;xen_domu&quot;,
-          &quot;hv&quot;:      &quot;hyper_v&quot;,
-          &quot;vmware&quot;:  &quot;vmware&quot;,
-          &quot;generic&quot;: &quot;generic_hypervisor&quot;
-        }';
+        &#34;fbsd_known_guest_vms&#34; data =&gt; &#39;{
+          &#34;xen&#34;:     &#34;xen_domu&#34;,
+          &#34;hv&#34;:      &#34;hyper_v&#34;,
+          &#34;vmware&#34;:  &#34;vmware&#34;,
+          &#34;generic&#34;: &#34;generic_hypervisor&#34;
+        }&#39;;
 
-        &quot;fbsd_known_guest&quot; slist =&gt; getindices(&quot;known_guest_vms&quot;);
+        &#34;fbsd_known_guest&#34; slist =&gt; getindices(&#34;known_guest_vms&#34;);
 
     classes:
 
       freebsd::
 
-        &quot;found_vm_guest&quot; expression =&gt; strcmp(&quot;$(fbsd_known_guest)&quot;, &quot;$(fbsd_vm_guest)&quot;);
+        &#34;found_vm_guest&#34; expression =&gt; strcmp(&#34;$(fbsd_known_guest)&#34;, &#34;$(fbsd_vm_guest)&#34;);
 
-          &quot;$(known_guest_vms[$(vm_guest)])&quot; expression =&gt; &quot;found_vm_guest&quot;,
-            scope =&gt; &quot;namespace&quot;;
+          &#34;$(known_guest_vms[$(vm_guest)])&#34; expression =&gt; &#34;found_vm_guest&#34;,
+            scope =&gt; &#34;namespace&#34;;
 
     reports:
 
       found_vm_guest::
 
-        &quot;Host is Virtualized&quot;;
+        &#34;Host is Virtualized&#34;;
 
       xen_domu::
 
-        &quot;Running on Xen&quot;;
+        &#34;Running on Xen&#34;;
 }
-</code></pre><p>Doing a test of this agent on a DomU FreeBSD host will set a &lsquo;xen_domu&rsquo; class
+</code></pre></div><p>Doing a test of this agent on a DomU FreeBSD host will set a &lsquo;xen_domu&rsquo; class
 and report that the host is virtualized.</p>
 <pre><code>$ uname -sr
 FreeBSD 12.0-CURRENT
@@ -200,7 +200,7 @@ R: Running on Xen
 </article>
 </main>
 <footer>
-<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|⚡️
+<hr><a class=soc href=https://github.com/skreuzer title=GitHub><i data-feather=github></i></a>|<a class=soc href=https://twitter.com/skreuzer title=Twitter><i data-feather=twitter></i></a>|<a class=soc href=https://www.linkedin.com/in/skreuzer title=LinkedIn><i data-feather=linkedin></i></a>|⚡️
 2021 © Steven Kreuzer | <a href=https://github.com/athul/archie>Archie Theme</a> | Built with <a href=https://gohugo.io>Hugo</a>
 </footer>
 <script>feather.replace()</script></div>
