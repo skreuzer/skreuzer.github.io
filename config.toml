@@ -4,6 +4,10 @@ title = 'Steven Kreuzer'
 theme = 'archie'
 copyright = "© Steven Kreuzer"
 paginate = 3
+# Code Highlight
+pygmentsstyle = "monokai"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
 
 [[params.social]]
 name = "GitHub"
