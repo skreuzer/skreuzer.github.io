@@ -6,7 +6,7 @@ tags: [netapp, storage]
 Here is what a portion of the output from the `stats show disk` command
 looks like:
 
-disk:20000020:37F352F1:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:disk_busy:0%
+`disk:20000020:37F352F1:00000000:00000000:00000000:00000000:00000000:00000000:00000000:00000000:disk_busy:0%`
 
 To determine what drive is being referenced above, copy the last 6 digits of
 the second set of numbers (i.e. F352F1) Run the `storage show disk -a` command
